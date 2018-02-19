@@ -1,20 +1,10 @@
-// Hello.
-//
-// This is JSHint, a tool that helps to detect errors and potential
-// problems in your JavaScript code.
-//
-// To start, simply enter some JavaScript anywhere on this page. Your
-// report will appear on the right side.
-//
-// Additionally, you can toggle specific options in the Configure
-// menu.
-
 const steem = require('steem');
+const {createServer} = require('http').createServer().listen(3000)
 //CONSTANTS AND VARIABLES
       var profit;
       var amountFloat;
-      var ACCOUNT_NAME = '';
-      var ACCOUNT_KEY = '';
+      const ACCOUNT_NAME = 'teamnz';
+      const ACCOUNT_KEY = process.env.POSTING_KEY;
       const TAG = "teamnz";
       var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
 //START
