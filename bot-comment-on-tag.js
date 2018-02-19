@@ -6,7 +6,7 @@ const {createServer} = require('http').createServer().listen(3000)
       const ACCOUNT_NAME = 'teamnz';
       const ACCOUNT_KEY = process.env.POSTING_KEY;
       const TAG = "teamnz";
-      var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
+
 //START
       console.log('Bot started. Checking transactions, listening to tags... ');
       steem.api.setOptions({ url: 'https://api.steemit.com' });
@@ -16,7 +16,7 @@ const {createServer} = require('http').createServer().listen(3000)
       var txType = result.operations[0][0];
       var txData = result.operations[0][1];
 //Check that it is a post
-      if (txType=='comment'){
+      if (txType=='comment' && (txData.parent_author=="")){
           var author = txData.author;
           var link = txData.permlink;
           //console.log('processing post by: ', author, ' link: ', link);
@@ -44,14 +44,15 @@ const {createServer} = require('http').createServer().listen(3000)
         }//close err funk
     );//close streamTransactions
 
-        function sendVote(ACCOUNT_KEY, ACCOUNT_NAME,author, link, weight){
+        function sendVote(ACCOUNT_KEY, ACCOUNT_NAME,author,link, weight){
             steem.broadcast.vote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, weight, function(err, result) {
                 console.log(err, result);
                 console.log('Voted on post: ' ,link, ' by: ', author );
 
             });
         }
-        function postComment(ACCOUNT_NAME,ACCOUNT_KEY,permlink,author,link){
+        function postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link){
+        var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
         steem.broadcast.comment(
           ACCOUNT_KEY,
           author, // Parent Author
@@ -60,7 +61,7 @@ const {createServer} = require('http').createServer().listen(3000)
           permlink, // Permlink
           '', // Title
           '<a href="https://discord.gg/rXENHmb"><img src="https://steemitimages.com/DQmW1NKA8XygdJzHidCbnx8o6SsFDKirS3CYrwRLYmRkhWe/teamnz.jpg"></a><br><i>This is a curation bot for TeamNZ. Please join our AUS/NZ community on <a href="https://discord.gg/rXENHmb">Discord</a>.<br>For any inquiries about the bot please contact @cryptonik.</i>', // Body,
-          { tags: ['test'], app: 'teamnz/cryptonik' }, // Json Metadata
+          { tags: ['test'], app: 'steemjs' }, // Json Metadata
           function(err, result) {
             console.log(err, result);
             console.log('Commented on post.');
