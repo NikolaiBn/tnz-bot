@@ -1,0 +1,23 @@
+{
+  "name": "bot-comment-on-tags",
+  "version": "1.0.0",
+  "description": "bot for teamnz",
+  "main": "bot-comment-on-tag.js",
+  "scripts": {
+    "start": "node ./bot-comment-on-tag.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NikolaiBn/tnz-curation-bot.git"
+  },
+  "author": "cryptonik",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NikolaiBn/tnz-curation-bot/issues"
+  },
+  "homepage": "https://github.com/NikolaiBn/tnz-curation-bot#readme",
+  "dependencies": {
+    "steem": "^0.7.1"
+  }
+}
