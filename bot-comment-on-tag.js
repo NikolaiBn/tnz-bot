@@ -8,7 +8,7 @@ const {createServer} = require('http').createServer().listen(3000)
       const TAG = "teamnz";
       var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
 //START
-      console.log('Checking Transactions: ');
+      console.log('Bot started. Checking transactions, listening to tags... ');
       steem.api.setOptions({ url: 'https://api.steemit.com' });
 
 //GET DATA FROM BLOCKCHAIN
@@ -19,15 +19,19 @@ const {createServer} = require('http').createServer().listen(3000)
       if (txType=='comment'){
           var author = txData.author;
           var link = txData.permlink;
-          console.log('processing post by: ', author, ' link: ', link);
+          //console.log('processing post by: ', author, ' link: ', link);
 					var json;
           try {json = JSON.parse(txData.json_metadata);}
-          catch(err) {console.log('No json metadata: ', err.name);}
-          try {console.log('JSON: ', json.tags);}
-          catch(err){console.log('No tag object in json: ', err.name);}
+          catch(err) {//console.log('No json metadata: ', err.name);
+                      }
+          try {//console.log('JSON: ', json.tags);
+              }
+          catch(err){//console.log('No tag object in json: ', err.name);
+                    }
           var hasTag;
           try {hasTag=json.tags.indexOf(TAG);}
-          catch(err) {console.log('Cannot call indexOf: ', err.name);}
+          catch(err) {//console.log('Cannot call indexOf: ', err.name);
+                      }
 
           if (hasTag > -1){
           console.log('Tag found in post by: ', author);
@@ -42,7 +46,7 @@ const {createServer} = require('http').createServer().listen(3000)
         function sendVote(ACCOUNT_KEY, ACCOUNT_NAME,author, link, weight){
             steem.broadcast.vote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, weight, function(err, result) {
                 console.log(err, result);
-                console.log('Voted on post.');
+                console.log('Voted on post: ' ,link, ' by: ', author );
 
             });
         }
