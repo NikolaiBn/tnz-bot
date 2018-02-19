@@ -21,16 +21,17 @@ const {createServer} = require('http').createServer().listen(3000)
           var link = txData.permlink;
           //console.log('processing post by: ', author, ' link: ', link);
 					var json;
+          var problem;
           try {json = JSON.parse(txData.json_metadata);}
-          catch(err) {//console.log('No json metadata: ', err.name);
+          catch(err) {problem = err.name;
                       }
           try {//console.log('JSON: ', json.tags);
               }
-          catch(err){//console.log('No tag object in json: ', err.name);
+          catch(err){problem = err.name;
                     }
           var hasTag;
           try {hasTag=json.tags.indexOf(TAG);}
-          catch(err) {//console.log('Cannot call indexOf: ', err.name);
+          catch(err) {problem = err.name;
                       }
 
           if (hasTag > -1){
