@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NikolaiBn/tnz-curation-bot.git"
+    "url": "git+https://github.com/NikolaiBn/tnz-bot.git"
   },
   "author": "cryptonik",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NikolaiBn/tnz-curation-bot/issues"
+    "url": "https://github.com/NikolaiBn/tnz-bot.git"
   },
-  "homepage": "https://github.com/NikolaiBn/tnz-curation-bot#readme",
+  "homepage": "https://github.com/NikolaiBn/tnz-bot.git#readme",
   "dependencies": {
     "steem": "^0.7.1"
   }
