@@ -36,7 +36,7 @@ const {createServer} = require('http').createServer().listen(3000)
 
           if (hasTag > -1){
           console.log('Tag found in post by: ', author);
-          postComment(ACCOUNT_NAME,ACCOUNT_KEY,permlink,author,link);
+          postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
           sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
 
                          } // close if
