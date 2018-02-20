@@ -4,8 +4,9 @@ const {createServer} = require('http').createServer().listen(3000)
       var profit;
       var amountFloat;
       const ACCOUNT_NAME = 'teamnz';
-      const ACCOUNT_KEY = process.env.POSTING_KEY;
-      const TAG = "teamnz";
+      const TAG = 'teamnz';
+     const ACCOUNT_KEY = process.env.POSTING_KEY;
+
 
 //START
       console.log('Bot started. Checking transactions, listening to tags... ');
@@ -15,6 +16,7 @@ const {createServer} = require('http').createServer().listen(3000)
       steem.api.streamTransactions('head', function(err, result) {
       var txType = result.operations[0][0];
       var txData = result.operations[0][1];
+      var check;
 //Check that it is a post
       if (txType=='comment' && (txData.parent_author=="")){
           var author = txData.author;
@@ -22,24 +24,26 @@ const {createServer} = require('http').createServer().listen(3000)
           //console.log('processing post by: ', author, ' link: ', link);
 					var json;
           var problem;
-          try {json = JSON.parse(txData.json_metadata);}
-          catch(err) {problem = err.name;
-                      }
-          try {//console.log('JSON: ', json.tags);
-              }
-          catch(err){problem = err.name;
-                    }
-          var hasTag;
-          try {hasTag=json.tags.indexOf(TAG);}
-          catch(err) {problem = err.name;
-                      }
+          if(txData.hasOwnProperty('json_metadata')){
+            try {json = JSON.parse(txData.json_metadata);}
+            catch(err) {problem = err.name;}
+                      //console.log('has metadata');
+                      check = json.hasOwnProperty('tags');
+                      //console.log('check:',check);
 
-          if (hasTag > -1){
-          console.log('Tag found in post by: ', author);
-          postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
-          sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
+                        if (check){
+                          try {hasTag=json.tags.indexOf(TAG);
+                            //console.log(' entered idexing ');}
+                            catch(err) {problem = err.name;}
 
-                         } // close if
+                          if(hasTag > -1){
+                            console.log('Tag found in: ',link, ' by: ', author);
+                            postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
+                            sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
+
+                        } // 1. close if hasTag
+                      } // 2. close if check
+                    } // 3. close if json metadata
                 }//close if=comment
         }//close err funk
     );//close streamTransactions
