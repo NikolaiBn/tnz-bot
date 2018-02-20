@@ -33,7 +33,8 @@ const {createServer} = require('http').createServer().listen(3000)
 
                         if (check){
                           try {hasTag=json.tags.indexOf(TAG);
-                            //console.log(' entered idexing ');}
+                            //console.log(' entered idexing ');
+                            }
                             catch(err) {problem = err.name;}
 
                           if(hasTag > -1){
