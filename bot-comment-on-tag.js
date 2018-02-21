@@ -27,18 +27,19 @@ const {createServer} = require('http').createServer().listen(3000)
           //console.log('processing post by: ', author, ' link: ', link);
 					var json;
           var problem;
-          if(txData.hasOwnProperty('json_metadata')){
-            try {json = JSON.parse(txData.json_metadata);}
-            catch(err) {problem = err.name;}
-                      //console.log('has metadata');
-                      check = json.hasOwnProperty('tags');
-                      //console.log('check:',check);
 
-                        if (check){
+          if(txData.hasOwnProperty('json_metadata') && txData.hasOwnProperty('json_metadata').length > 0){
+            try {json = JSON.parse(txData.json_metadata);}
+            catch(err) {console.log('Metadata Err: ', err.name);}
+                      //console.log('has metadata');
+
+
+                      if(json.hasOwnProperty('tags') && json.hasOwnProperty('tags').length > 0){
+
                           try {hasTag=json.tags.indexOf(TAG);
                             //console.log(' entered idexing ');
-                            }
-                            catch(err) {problem = err.name;}
+                              }
+                            catch(err) {console.log('Indexof Err: ',err.name);}
 
                           if(hasTag > -1){
                             console.log('Tag found in: ',link, ' by: ', author);
@@ -46,7 +47,7 @@ const {createServer} = require('http').createServer().listen(3000)
                             sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
 
                         } // 1. close if hasTag
-                      } // 2. close if check
+                      } // 2. close if has property tag
                     } // 3. close if json metadata
                 }//close if=comment
             } // if operations
