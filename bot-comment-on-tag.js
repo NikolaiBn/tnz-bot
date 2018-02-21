@@ -14,6 +14,9 @@ const {createServer} = require('http').createServer().listen(3000)
 
 //GET DATA FROM BLOCKCHAIN
       steem.api.streamTransactions('head', function(err, result) {
+
+  if(result.operations && result.operations.length > 0){
+
       var txType = result.operations[0][0];
       var txData = result.operations[0][1];
       var check;
@@ -46,6 +49,7 @@ const {createServer} = require('http').createServer().listen(3000)
                       } // 2. close if check
                     } // 3. close if json metadata
                 }//close if=comment
+            } // if operations
         }//close err funk
     );//close streamTransactions
 
