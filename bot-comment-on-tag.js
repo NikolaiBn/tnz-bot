@@ -1,24 +1,25 @@
 const steem = require('steem');
 const {createServer} = require('http').createServer().listen(3000)
 //CONSTANTS AND VARIABLES
-      var profit;
-      var amountFloat;
+      var steemStream;
       const ACCOUNT_NAME = 'teamnz';
-      const TAG = 'teamnz';
+      const TAG = 'steemtest';
      const ACCOUNT_KEY = process.env.POSTING_KEY;
-
-
 //START
       console.log('Bot started. Checking transactions, listening to tags... ');
       steem.api.setOptions({ url: 'https://api.steemit.com' });
-
+//TIMER
+      setTimeout(function(){
+        // start stream after 5 seconds
+        startSteemStream()
+      },5000)
 //GET DATA FROM BLOCKCHAIN
-      steem.api.streamTransactions('head', function(err, result) {
+function startSteemStream(){
+steemStream = steem.api.streamTransactions('head', function(err, result) {
+try{
+    var txType = result.operations[0][0]
+    var txData = result.operations[0][1]
 
-  if(result.operations && result.operations.length > 0){
-
-      var txType = result.operations[0][0];
-      var txData = result.operations[0][1];
       var check;
 //Check that it is a post
       if (txType=='comment' && (txData.parent_author=="")){
@@ -45,15 +46,28 @@ const {createServer} = require('http').createServer().listen(3000)
                             console.log('Tag found in: ',link, ' by: ', author);
                             postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
                             sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
-
-                        } // 1. close if hasTag
+                            } // 1. close if hasTag
                       } // 2. close if has property tag
                     } // 3. close if json metadata
                 }//close if=comment
-            } // if operations
+
+              }//TRY
+              catch(error){
+                console.log(error)
+                // if error restart stream
+                restartSteemStream()
+                            } //catch
         }//close err funk
     );//close streamTransactions
+}//steemStream
 
+function endSteemStream(){
+  steemStream()
+}
+function restartSteemStream(){
+  endSteemStream()
+  startSteemStream()
+}
         function sendVote(ACCOUNT_KEY, ACCOUNT_NAME,author,link, weight){
             steem.broadcast.vote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, weight, function(err, result) {
                 console.log(err, result);
