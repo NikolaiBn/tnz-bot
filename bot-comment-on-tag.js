@@ -20,7 +20,6 @@ try{
     var txType = result.operations[0][0]
     var txData = result.operations[0][1]
 
-      var check;
 //Check that it is a post
       if (txType=='comment' && (txData.parent_author=="")){
           var author = txData.author;
@@ -29,27 +28,18 @@ try{
 					var json;
           var problem;
 
-          if(txData.hasOwnProperty('json_metadata') && txData.hasOwnProperty('json_metadata').length > 0){
-            try {json = JSON.parse(txData.json_metadata);}
-            catch(err) {console.log('Metadata Err: ', err.name);}
-                      //console.log('has metadata');
-
-
-                      if(json.hasOwnProperty('tags') && json.hasOwnProperty('tags').length > 0){
-
-                          try {hasTag=json.tags.indexOf(TAG);
-                            //console.log(' entered idexing ');
-                              }
-                            catch(err) {console.log('Indexof Err: ',err.name);}
-
-                          if(hasTag > -1){
-                            console.log('Tag found in: ',link, ' by: ', author);
-                            postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
+            json = JSON.parse(txData.json_metadata);
+                      if(json.hasOwnProperty('tags')){
+                          hasTag=json.tags.indexOf(TAG);
+                              if(hasTag > -1){
+                                  console.log('Tag found in: ',link, ' by: ', author);
+                                  postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
                             sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
-                            } // 1. close if hasTag
-                      } // 2. close if has property tag
-                    } // 3. close if json metadata
-                }//close if=comment
+                                            } // 1. close if hasTag
+
+                                    }// 3. close hasOwnProperty
+
+                        }//close if=comment
 
               }//TRY
               catch(error){
