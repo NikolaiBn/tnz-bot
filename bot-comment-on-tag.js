@@ -3,7 +3,7 @@ const {createServer} = require('http').createServer().listen(3000)
 //CONSTANTS AND VARIABLES
       var steemStream;
       const ACCOUNT_NAME = 'teamnz';
-      const TAG = 'steemtest';
+      const TAG = 'teamnz';
      const ACCOUNT_KEY = process.env.POSTING_KEY;
 //START
       console.log('Bot started. Checking transactions, listening to tags... ');
