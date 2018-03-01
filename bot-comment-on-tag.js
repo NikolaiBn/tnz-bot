@@ -2,9 +2,10 @@ const steem = require('steem');
 const {createServer} = require('http').createServer().listen(3000)
 //CONSTANTS AND VARIABLES
       var steemStream;
+      var check = 1;
       const ACCOUNT_NAME = 'teamnz';
       const TAG = 'teamnz';
-     const ACCOUNT_KEY = process.env.POSTING_KEY;
+      const ACCOUNT_KEY = process.env.POSTING_KEY;
 //START
       console.log('Bot started. Checking transactions, listening to tags... ');
       steem.api.setOptions({ url: 'https://api.steemit.com' });
@@ -33,8 +34,11 @@ try{
                           hasTag=json.tags.indexOf(TAG);
                               if(hasTag > -1){
                                   console.log('Tag found in: ',link, ' by: ', author);
-                                  postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
-                            sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
+
+                                    postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
+
+                           sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
+
                                             } // 1. close if hasTag
 
                                     }// 3. close hasOwnProperty
@@ -58,6 +62,8 @@ function restartSteemStream(){
   endSteemStream()
   startSteemStream()
 }
+
+
         function sendVote(ACCOUNT_KEY, ACCOUNT_NAME,author,link, weight){
             steem.broadcast.vote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, weight, function(err, result) {
                 console.log(err, result);
@@ -67,19 +73,38 @@ function restartSteemStream(){
         }
         function postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link){
         var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
-        steem.broadcast.comment(
-          ACCOUNT_KEY,
-          author, // Parent Author
-          link, // Parent Permlink
-          ACCOUNT_NAME, // Author
-          permlink, // Permlink
-          '', // Title
-          '<a href="https://discord.gg/rXENHmb"><img src="https://steemitimages.com/DQmW1NKA8XygdJzHidCbnx8o6SsFDKirS3CYrwRLYmRkhWe/teamnz.jpg"></a><br><i>This is a curation bot for TeamNZ. Please join our AUS/NZ community on <a href="https://discord.gg/rXENHmb">Discord</a>.<br>For any inquiries about the bot please contact @cryptonik.</i>', // Body,
-          { tags: ['test'], app: 'steemjs' }, // Json Metadata
-          function(err, result) {
-            console.log(err, result);
-            console.log('Commented on post.');
 
-                                }
-                        );
+        steem.api.getContentReplies(author, link, function(err, result) {
+        console.log(err, result);
+        console.log('Array length: ', result.length);
+        check = 1;
+        if(result.length>0){
+          for(i=0;i<result.length;i++){
+            if(result[i].author==ACCOUNT_NAME){
+
+              check = 0;
                 }
+              }
+            }
+            if(check==1){
+              steem.broadcast.comment(
+                ACCOUNT_KEY,
+                author, // Parent Author
+                link, // Parent Permlink
+                ACCOUNT_NAME, // Author
+                permlink, // Permlink
+                '', // Title
+                '<a href="https://discord.gg/rXENHmb"><img src="https://steemitimages.com/DQmW1NKA8XygdJzHidCbnx8o6SsFDKirS3CYrwRLYmRkhWe/teamnz.jpg"></a><br><i>This is a curation bot for TeamNZ. Please join our AUS/NZ community on <a href="https://discord.gg/rXENHmb">Discord</a>.<br>For any inquiries/issues about the bot please contact @cryptonik.</i>', // Body,
+                { tags: ['test'], app: 'steemjs' }, // Json Metadata
+                function(err, result) {
+                  console.log(err, result);
+                  console.log('Commented on post.');
+
+                                      }
+                              );
+                    }
+            else {
+              console.log('Commented on this post already!')
+                }
+          });
+}
