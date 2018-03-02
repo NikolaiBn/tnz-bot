@@ -33,12 +33,16 @@ try{
                       if(json.hasOwnProperty('tags')){
                           hasTag=json.tags.indexOf(TAG);
                               if(hasTag > -1){
-                                  console.log('Tag found in: ',link, ' by: ', author);
 
-                                    postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
-
-                           sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
-
+                                    if(author=='mutiarahmi' || author=='srimulyani' || author=='adam.smit'){
+                                      console.log(author, ': This User is blacklisted.');
+                                      postWarning(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
+                                                    }
+                                                else{
+                                                    console.log('Tag found in: ',link, ' by: ', author);
+                                                    postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
+                                                    sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
+                                                    }//close else
                                             } // 1. close if hasTag
 
                                     }// 3. close hasOwnProperty
@@ -70,6 +74,24 @@ function restartSteemStream(){
                 console.log('Voted on post: ' ,link, ' by: ', author );
 
             });
+        }
+        function postWarning(ACCOUNT_NAME,ACCOUNT_KEY,author,link){
+        var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
+        steem.broadcast.comment(
+          ACCOUNT_KEY,
+          author, // Parent Author
+          link, // Parent Permlink
+          ACCOUNT_NAME, // Author
+          permlink, // Permlink
+          '', // Title
+          '<h2>We do not encourage plagiarism, spam or tag abuse. This user has been blacklisted!</h2>', // Body,
+          { tags: ['test'], app: 'steemjs' }, // Json Metadata
+          function(err, result) {
+            console.log(err, result);
+            console.log('Commented on post.');
+
+                                }
+                        );
         }
         function postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link){
         var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
