@@ -6,6 +6,9 @@ const {createServer} = require('http').createServer().listen(3000)
       const ACCOUNT_NAME = 'teamnz';
       const TAG = 'teamnz';
       const ACCOUNT_KEY = process.env.POSTING_KEY;
+// WHITELIST
+      var blacklist = ['mutiarahmi','srimulyani','adam.smit'];
+      var whitelist = ['ravenruis','cryptonik','schopenhauer','jackmiller','trudeehunter','thetinykitchen','andysantics48','len.george','kiwiscanfly','john-unasa','melissakellie','biglipsmama','sift666','betelzeus','youvegotquail','kiwideb','samueldouglas','choogirl','ausbitbank','forkyw','masterswatch','uniforce','gamersclassified'];
 //START
       console.log('Bot started. Checking transactions, listening to tags... ');
       steem.api.setOptions({ url: 'https://api.steemit.com' });
@@ -34,15 +37,15 @@ try{
                           hasTag=json.tags.indexOf(TAG);
                               if(hasTag > -1){
 
-                                    if(author=='mutiarahmi' || author=='srimulyani' || author=='adam.smit'){
+                                    if(blacklist.indexOf(author) > -1){
                                       console.log(author, ': This User is blacklisted.');
                                       postWarning(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
                                                     }
-                                                else{
-                                                    console.log('Tag found in: ',link, ' by: ', author);
-                                                    postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
-                                                    sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
-                                                    }//close else
+                                    else if(whitelist.indexOf(author) > -1){
+                                            console.log('Tag found in: ',link, ' by: ', author);
+                                            postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
+                                            sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
+                                                  }//close else if
                                             } // 1. close if hasTag
 
                                     }// 3. close hasOwnProperty
