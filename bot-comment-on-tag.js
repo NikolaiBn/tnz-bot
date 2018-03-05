@@ -46,6 +46,9 @@ try{
                                             postComment(ACCOUNT_NAME,ACCOUNT_KEY,author,link);
                                             sendVote(ACCOUNT_KEY, ACCOUNT_NAME, author, link, 10000);
                                                   }//close else if
+                                    else{
+                                      console.log('User not on list, post ignored.');
+                                    }
                                             } // 1. close if hasTag
 
                                     }// 3. close hasOwnProperty
@@ -100,8 +103,8 @@ function restartSteemStream(){
         var permlink = new Date().toISOString().replace(/[^a-zA-Z0-9]+/g, '').toLowerCase();
 
         steem.api.getContentReplies(author, link, function(err, result) {
-        console.log(err, result);
-        console.log('Array length: ', result.length);
+        // console.log(err, result);
+        // console.log('Array length: ', result.length);
         check = 1;
         if(result.length>0){
           for(i=0;i<result.length;i++){
