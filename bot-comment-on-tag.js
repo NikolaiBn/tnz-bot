@@ -122,7 +122,7 @@ function restartSteemStream(){
                 ACCOUNT_NAME, // Author
                 permlink, // Permlink
                 '', // Title
-                '<a href="https://discord.gg/rXENHmb"><img src="https://steemitimages.com/DQmW1NKA8XygdJzHidCbnx8o6SsFDKirS3CYrwRLYmRkhWe/teamnz.jpg"></a><br><i>This is a curation bot for TeamNZ. Please join our AUS/NZ community on <a href="https://discord.gg/rXENHmb">Discord</a>.<br>For any inquiries/issues about the bot please contact @cryptonik.</i>', // Body,
+                '<a href="https://discord.gg/rXENHmb"><img src="https://steemitimages.com/DQmW1NKA8XygdJzHidCbnx8o6SsFDKirS3CYrwRLYmRkhWe/teamnz.jpg"></a><br><i>This is a curation bot for TeamNZ. Please join our AUS/NZ community on <a href="https://discord.gg/GjSqbNx">Discord</a>.<br>For any inquiries/issues about the bot please contact @cryptonik.</i>', // Body,
                 { tags: ['test'], app: 'steemjs' }, // Json Metadata
                 function(err, result) {
                   console.log(err, result);
