@@ -8,7 +8,7 @@ const {createServer} = require('http').createServer().listen(3000)
       const ACCOUNT_KEY = process.env.POSTING_KEY;
 // WHITELIST
       var blacklist = ['mutiarahmi','srimulyani','adam.smit'];
-      var whitelist = ['ravenruis','cryptonik','questingtw','conradt','schopenhauer','jackmiller','trudeehunter','thetinykitchen','andysantics48','len.george','kiwiscanfly','john-unasa','melissakellie','biglipsmama','sift666','betelzeus','youvegotquail','kiwideb','samueldouglas','choogirl','ausbitbank','forkyw','masterswatch','uniforce','gamersclassified'];
+      var whitelist = ['ravenruis','cryptonik','questingtw','devitech','zephyr119','imjustsaying','conradt','schopenhauer','jackmiller','trudeehunter','thetinykitchen','andysantics48','len.george','kiwiscanfly','john-unasa','melissakellie','biglipsmama','sift666','betelzeus','youvegotquail','kiwideb','samueldouglas','choogirl','ausbitbank','forkyw','masterswatch','uniforce','gamersclassified'];
 //START
       console.log('Bot started. Checking transactions, listening to tags... ');
       steem.api.setOptions({ url: 'https://api.steemit.com' });
